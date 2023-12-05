@@ -2,3 +2,14 @@
 /parsed
 /preprocessed
 __pycache__/robots.cpython-311.pyc
+robots_info.txt
+tfidf_features.pkl
+tfidf_matrix.pkl
+__pycache__/afinn.cpython-311.pyc
+__pycache__/clustering.cpython-311.pyc
+__pycache__/crawler.cpython-311.pyc
+__pycache__/parsing.cpython-311.pyc
+__pycache__/preprocess.cpython-311.pyc
+__pycache__/scrapy_spider.cpython-311.pyc
+__pycache__/sentiment_analysis.cpython-311.pyc
+__pycache__/vectorization.cpython-311.pyc
