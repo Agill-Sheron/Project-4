@@ -1,15 +1,14 @@
 import urllib.robotparser
 
-def is_url_allowed(target_url, robots_txt_url):
+def fetch_and_save_robots_info(robots_txt_url, output_file):
     rp = urllib.robotparser.RobotFileParser()
     rp.set_url(robots_txt_url)
     rp.read()
-    return rp.can_fetch("*", target_url)
 
-# Example Usage
-robots_url = "https://www.concordia.ca/robots.txt"
-target_url = "https://www.concordia.ca/about.html"
-if is_url_allowed(target_url, robots_url):
-    print(f"Crawling is allowed for: {target_url}")
-else:
-    print(f"Crawling is disallowed for: {target_url}")
+    with open(output_file, 'w') as file:
+        file.write(f"Fetching {robots_txt_url}...\n")
+
+        file.write("\nDisallowed Paths:\n")
+        for rule in rp.default_entry.rulelines:
+            if not rule.allowance:
+                file.write(f"{rule.path}\n")

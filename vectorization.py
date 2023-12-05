@@ -2,6 +2,21 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 import os
 import pickle
 
+def perform_vectorization(preprocessed_dir, tfidf_matrix_file, tfidf_features_file):
+    documents = read_preprocessed_files(preprocessed_dir)
+
+    # Adjusted TF-IDF Vectorizer settings
+    vectorizer = TfidfVectorizer(max_df=0.5)
+    tfidf_matrix = vectorizer.fit_transform(documents)
+
+    # Save the TF-IDF matrix and feature names
+    with open(tfidf_matrix_file, 'wb') as file:
+        pickle.dump(tfidf_matrix, file)
+    with open(tfidf_features_file, 'wb') as file:
+        pickle.dump(vectorizer.get_feature_names_out(), file)
+
+    return tfidf_matrix, vectorizer.get_feature_names_out()
+
 def read_preprocessed_files(directory):
     documents = []
     for filename in os.listdir(directory):
@@ -10,22 +25,9 @@ def read_preprocessed_files(directory):
             documents.append(file.read())
     return documents
 
-# Read preprocessed text files
-preprocessed_dir = './preprocessed'
-texts = read_preprocessed_files(preprocessed_dir)
-
-# Create a TF-IDF Vectorizer
-vectorizer = TfidfVectorizer()
-tfidf_matrix = vectorizer.fit_transform(texts)
-
-# tfidf_matrix now contains the TF-IDF vectors for the documents
-from sklearn.feature_extraction.text import TfidfVectorizer
-import os
-
-# Save the TF-IDF matrix
-with open('tfidf_matrix.pkl', 'wb') as file:
-    pickle.dump(tfidf_matrix, file)
-
-# Optionally, save the feature names (words) for later reference
-with open('tfidf_features.pkl', 'wb') as file:
-    pickle.dump(vectorizer.get_feature_names_out(), file)
+if __name__ == "__main__":
+    preprocessed_dir = './preprocessed'
+    tfidf_matrix_file = 'tfidf_matrix.pkl'
+    tfidf_features_file = 'tfidf_features.pkl'
+    
+    perform_vectorization(preprocessed_dir, tfidf_matrix_file, tfidf_features_file)

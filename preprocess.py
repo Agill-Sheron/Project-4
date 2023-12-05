@@ -28,7 +28,7 @@ def preprocess_text(text):
     return preprocessed_text
 
 # Read, preprocess, and save the text
-def preprocess_and_save_files(input_dir, output_dir):
+def preprocess(input_dir, output_dir):
     if not os.path.exists(output_dir):
         os.makedirs(output_dir)
 
@@ -39,10 +39,3 @@ def preprocess_and_save_files(input_dir, output_dir):
 
         with open(os.path.join(output_dir, filename), 'w', encoding='utf-8') as file:
             file.write(preprocessed_text)
-
-# Directory paths
-parsed_dir = './parsed'
-preprocessed_dir = './preprocessed'
-
-# Process and save files
-preprocess_and_save_files(parsed_dir, preprocessed_dir)
