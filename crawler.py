@@ -44,9 +44,8 @@ def crawl_website(start_url, max_urls=50, delay=1):
     return visited_urls
 
 # Example usage
-crawled_urls = crawl_website("https://www.concordia.ca", max_urls=10, delay=2)
+crawled_urls = crawl_website("https://www.concordia.ca", max_urls=100, delay=2)
 print(f"Crawled {len(crawled_urls)} URLs")
-
 
 def extract_text_from_html(html_content):
     soup = BeautifulSoup(html_content, 'html.parser')
