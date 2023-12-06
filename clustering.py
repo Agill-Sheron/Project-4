@@ -21,10 +21,6 @@ def perform_clustering(tfidf_matrix_file, tfidf_features_file, n_clusters, n_ter
     
     return labels, top_terms
 
-def print_top_terms(top_terms):
-    for cluster, terms in top_terms.items():
-        print(f"Cluster {cluster}: {', '.join(terms)}")
-
 if __name__ == "__main__":
     tfidf_matrix_file = 'tfidf_matrix.pkl'
     tfidf_features_file = 'tfidf_features.pkl'

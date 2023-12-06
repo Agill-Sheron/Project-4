@@ -13,3 +13,7 @@ __pycache__/preprocess.cpython-311.pyc
 __pycache__/scrapy_spider.cpython-311.pyc
 __pycache__/sentiment_analysis.cpython-311.pyc
 __pycache__/vectorization.cpython-311.pyc
+sentiment_analysis_3_clusters.txt
+sentiment_analysis_6_clusters.txt
+top_terms_3_clusters.txt
+top_terms_6_clusters.txt

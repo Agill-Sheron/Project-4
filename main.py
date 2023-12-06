@@ -1,16 +1,27 @@
+import argparse
 from robots import fetch_and_save_robots_info
 from crawler import start_crawling
 from parsing import start_parsing
 from preprocess import preprocess
 from vectorization import perform_vectorization
-from clustering import perform_clustering, print_top_terms
+from clustering import perform_clustering
 from sentiment_analysis import get_cluster_sentiments
 from tqdm import tqdm
 
-def main():
+def save_top_terms(top_terms, filename):
+    with open(filename, 'w') as file:
+        for cluster, terms in top_terms.items():
+            file.write(f"Cluster {cluster + 1}: {', '.join(terms)}\n")
+
+def save_sentiment_analysis(cluster_sentiments, filename):
+    with open(filename, 'w') as file:
+        for cluster, sentiment in cluster_sentiments.items():
+            file.write(f"Cluster {cluster + 1}: Average Sentiment = {sentiment}\n")
+
+
+def main(max_urls):
     # Directory paths
     start_url = "https://www.concordia.ca"
-    max_urls = 1000
     depth_limit = 3
     html_dir = './html'
     parsed_dir = './parsed'
@@ -40,11 +51,11 @@ def main():
         pbar.update(1)
     
         pbar.set_description("Clustering k=3")
-        labels_3, top_terms_3 = perform_clustering(tfidf_matrix_file, tfidf_features_file, 3, 10)
+        labels_3, top_terms_3 = perform_clustering(tfidf_matrix_file, tfidf_features_file, 3, 20)
         pbar.update(1)
     
         pbar.set_description("Clustering k=6")
-        labels_6, top_terms_6 = perform_clustering(tfidf_matrix_file, tfidf_features_file, 6, 10)
+        labels_6, top_terms_6 = perform_clustering(tfidf_matrix_file, tfidf_features_file, 6, 20)
         pbar.update(1)
     
         pbar.set_description("Sentiment Analysis")
@@ -52,17 +63,15 @@ def main():
         cluster_sentiments_6 = get_cluster_sentiments(preprocessed_dir, labels_6)
         pbar.update(1)
 
-
-    # Print top terms  
-    print("\nTop terms for 3 clusters:")
-    print_top_terms(top_terms_3)
     
-    print("\nTop terms for 6 clusters:")
-    print_top_terms(top_terms_6)
-
-    # Print cluster sentiments
-    print("Cluster Sentiments for 3 Clusters:", cluster_sentiments_3)
-    print("Cluster Sentiments for 6 Clusters:", cluster_sentiments_6)
+    save_top_terms(top_terms_3, 'top_terms_3_clusters.txt')
+    save_top_terms(top_terms_6, 'top_terms_6_clusters.txt')
+    save_sentiment_analysis(cluster_sentiments_3, 'sentiment_analysis_3_clusters.txt')
+    save_sentiment_analysis(cluster_sentiments_6, 'sentiment_analysis_6_clusters.txt')
 
 if __name__ == "__main__":
-    main()
+    parser = argparse.ArgumentParser(description='Web Crawling and Analysis Script')
+    parser.add_argument('-max', '--max_urls', type=int, default=1000, help='Maximum number of URLs to crawl')
+    args = parser.parse_args()
+
+    main(max_urls=args.max_urls)
